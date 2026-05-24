@@ -1,0 +1,151 @@
+
+<style>
+  .dime-container { padding: 1rem 0.5rem; font-family: var(--font-sans); }
+  .title-badge { display: inline-block; background: #CECBF6; color: #26215C; border-radius: 20px; padding: 6px 18px; font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+  .main-title { font-size: 26px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+  .subtitle { font-size: 14px; color: var(--color-text-secondary); margin: 0 0 20px; }
+  .intro-box { background: #EEEDFE; border: 1.5px solid #AFA9EC; border-radius: var(--border-radius-lg); padding: 14px 18px; margin-bottom: 20px; display: flex; gap: 14px; align-items: center; }
+  .intro-bubble { background: #534AB7; color: #EEEDFE; border-radius: 16px 16px 16px 4px; padding: 10px 16px; font-size: 15px; font-weight: 500; color: #EEEDFE; flex-shrink: 0; }
+  .intro-arrow { font-size: 20px; color: #7F77DD; }
+  .intro-instruction { font-size: 13px; color: #3C3489; line-height: 1.5; }
+  .cards-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .q-card { border-radius: var(--border-radius-lg); padding: 14px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: default; border: 2px solid transparent; transition: transform 0.15s; }
+  .q-card:hover { transform: scale(1.02); }
+  .q-icon { font-size: 36px; line-height: 1; }
+  .q-word { font-size: 17px; font-weight: 500; letter-spacing: 0.3px; }
+  .q-hint { font-size: 12px; text-align: center; line-height: 1.4; }
+  .card-quien  { background: #E6F1FB; border-color: #85B7EB; }
+  .card-quien  .q-word { color: #0C447C; }
+  .card-quien  .q-hint { color: #185FA5; }
+  .card-donde  { background: #EAF3DE; border-color: #97C459; }
+  .card-donde  .q-word { color: #27500A; }
+  .card-donde  .q-hint { color: #3B6D11; }
+  .card-que    { background: #FAEEDA; border-color: #EF9F27; }
+  .card-que    .q-word { color: #633806; }
+  .card-que    .q-hint { color: #854F0B; }
+  .card-quien2 { background: #FBEAF0; border-color: #ED93B1; }
+  .card-quien2 .q-word { color: #4B1528; }
+  .card-quien2 .q-hint { color: #993556; }
+  .answer-section { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 14px 18px; margin-bottom: 16px; border: 0.5px solid var(--color-border-tertiary); }
+  .answer-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; font-weight: 500; letter-spacing: 0.5px; }
+  .answer-line { background: var(--color-background-primary); border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); padding: 10px 14px; font-size: 15px; color: var(--color-text-tertiary); }
+  .stars-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 4px; }
+  .star-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #FAC775; background: #FAEEDA; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: background 0.15s, transform 0.12s; color: #854F0B; }
+  .star-btn:hover { transform: scale(1.15); background: #FAC775; }
+  .star-btn.active { background: #EF9F27; border-color: #BA7517; }
+  .stars-label { text-align: center; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 14px; }
+  .try-btn { display: block; width: 100%; padding: 12px; border-radius: var(--border-radius-md); background: #534AB7; color: #EEEDFE; border: none; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.15s, transform 0.1s; }
+  .try-btn:hover { background: #3C3489; }
+  .try-btn:active { transform: scale(0.98); }
+  .example-toggle { display: flex; align-items: center; gap: 6px; background: none; border: none; color: #534AB7; font-size: 13px; cursor: pointer; padding: 0; margin-bottom: 12px; font-family: var(--font-sans); }
+  .example-box { background: #EEEDFE; border-radius: var(--border-radius-md); padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #26215C; display: none; line-height: 1.7; }
+  .example-box.visible { display: block; }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .badge { border-radius: 12px; padding: 3px 10px; font-size: 12px; font-weight: 500; }
+</style>
+
+<div class="dime-container">
+  <h2 class="sr-only">Plantilla de juego comunicativo Dime más para niños TEA de 7 a 8 años</h2>
+
+  <div class="title-badge">🎮 juego de palabras</div>
+  <p class="main-title">¡Dime más! 🌟</p>
+  <p class="subtitle">Cuenta tu historia completa — ¡cuantas más palabras, más puntos!</p>
+
+  <div class="intro-box">
+    <div>
+      <div style="font-size:12px;color:#3C3489;font-weight:500;margin-bottom:4px;">👤 Dices:</div>
+      <div class="intro-bubble">"Fui al parque."</div>
+    </div>
+    <div class="intro-arrow">→</div>
+    <div class="intro-instruction">
+      <strong style="color:#26215C;">Ahora mira las tarjetas</strong> y añade más información.<br>
+      Intenta responder a todas — ¡eres un campeón!
+    </div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="q-card card-quien">
+      <div class="q-icon">👤</div>
+      <div class="q-word">¿Quién?</div>
+      <div class="q-hint">¿Fuiste solo o con alguien?</div>
+    </div>
+    <div class="q-card card-donde">
+      <div class="q-icon">📍</div>
+      <div class="q-word">¿Dónde?</div>
+      <div class="q-hint">¿Qué lugar exacto?</div>
+    </div>
+    <div class="q-card card-que">
+      <div class="q-icon">🎯</div>
+      <div class="q-word">¿Qué hiciste?</div>
+      <div class="q-hint">¿A qué jugaste o qué pasó?</div>
+    </div>
+    <div class="q-card card-quien2">
+      <div class="q-icon">🤝</div>
+      <div class="q-word">¿Con quién?</div>
+      <div class="q-hint">¿Había más personas?</div>
+    </div>
+  </div>
+
+  <button class="example-toggle" onclick="toggleExample(this)">
+    <i class="ti ti-bulb" aria-hidden="true" style="font-size:16px;"></i>
+    Ver ejemplo completo
+  </button>
+  <div class="example-box" id="example-box">
+    <span style="color:#3C3489;font-weight:500;">Antes:</span> "Fui al parque."<br>
+    <span style="color:#534AB7;font-weight:500;">✨ Después:</span> "Fui al parque <span style="background:#CECBF6;border-radius:4px;padding:1px 5px;">con mi mamá</span> y jugué <span style="background:#C0DD97;border-radius:4px;padding:1px 5px;">en el columpio</span> y en los toboganes."
+    <div class="badge-row">
+      <span class="badge" style="background:#CECBF6;color:#26215C;">👤 con mamá</span>
+      <span class="badge" style="background:#C0DD97;color:#27500A;">📍 parque</span>
+      <span class="badge" style="background:#FAC775;color:#633806;">🎯 columpio</span>
+    </div>
+  </div>
+
+  <div class="answer-section">
+    <div class="answer-label">MI FRASE COMPLETA</div>
+    <div class="answer-line">Escribe o di tu frase aquí… ✍️</div>
+  </div>
+
+  <div class="stars-label">¿Cuántas tarjetas usé? ⭐ ¡Marca tus puntos!</div>
+  <div class="stars-row">
+    <button class="star-btn" onclick="toggleStar(this,0)" title="1 tarjeta">⭐</button>
+    <button class="star-btn" onclick="toggleStar(this,1)" title="2 tarjetas">⭐</button>
+    <button class="star-btn" onclick="toggleStar(this,2)" title="3 tarjetas">⭐</button>
+    <button class="star-btn" onclick="toggleStar(this,3)" title="¡4 tarjetas!">🏆</button>
+  </div>
+  <div class="stars-label" id="stars-msg">Pulsa para marcar tu puntuación</div>
+
+  <button class="try-btn" onclick="sendPrompt('Quiero practicar el juego Dime más con otra frase corta')">
+    ¡Practicar con otra frase! ↗
+  </button>
+</div>
+
+<script>
+  function toggleExample(btn) {
+    const box = document.getElementById('example-box');
+    const isVisible = box.classList.toggle('visible');
+    btn.innerHTML = isVisible
+      ? '<i class="ti ti-bulb" aria-hidden="true" style="font-size:16px;"></i> Ocultar ejemplo'
+      : '<i class="ti ti-bulb" aria-hidden="true" style="font-size:16px;"></i> Ver ejemplo completo';
+  }
+
+  const msgs = [
+    "Pulsa para marcar tu puntuación",
+    "¡Usaste 1 tarjeta! 🙂",
+    "¡Usaste 2 tarjetas! 😊",
+    "¡Usaste 3 tarjetas! 🌟 ¡Genial!",
+    "¡Usaste TODAS! 🏆 ¡CAMPEÓN/A!"
+  ];
+  let current = 0;
+
+  function toggleStar(btn, idx) {
+    const stars = document.querySelectorAll('.star-btn');
+    if (current === idx + 1) {
+      stars.forEach(s => s.classList.remove('active'));
+      current = 0;
+    } else {
+      stars.forEach((s, i) => s.classList.toggle('active', i <= idx));
+      current = idx + 1;
+    }
+    document.getElementById('stars-msg').textContent = msgs[current];
+  }
+</script>
