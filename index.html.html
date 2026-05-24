@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escucho, Recuerdo y Actúo – Memoria Auditiva</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #1A1A2E;
+    --ink2:      #4A4A6A;
+    --ink3:      #8888AA;
+    --bg:        #F4F2FF;
+    --surface:   #FFFFFF;
+    --purple:    #5A4FCF;
+    --purple-l:  #EBE9FF;
+    --teal:      #0EA5A0;
+    --teal-l:    #DFFAF9;
+    --amber:     #D97706;
+    --amber-l:   #FEF3C7;
+    --red:       #DC2626;
+    --red-l:     #FEE2E2;
+    --green:     #059669;
+    --green-l:   #D1FAE5;
+    --border:    #E5E3FF;
+    --shadow:    0 2px 16px rgba(90,79,207,0.10);
+    --radius:    14px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+    color: var(--ink);
+  }
+
+  .container { max-width: 600px; margin: 0 auto; }
+
+  /* Header */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1.2rem;
+  }
+  .logo {
+    width: 52px; height: 52px;
+    background: var(--purple-l);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .top-bar h1 { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+  .top-bar p  { font-size: 12px; color: var(--ink2); margin-top: 2px; }
+
+  .meta-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .pill {
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pill-purple { background: var(--purple-l); color: var(--purple); }
+  .pill-amber  { background: var(--amber-l);  color: var(--amber);  }
+  .pill-green  { background: var(--green-l);  color: var(--green);  }
+
+  /* Phase navigation */
+  .phase-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.2rem;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .phase-nav::-webkit-scrollbar { height: 3px; }
+  .phase-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .ph-btn {
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--ink2);
+    border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .ph-btn:hover { border-color: var(--purple); color: var(--purple); }
+  .ph-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+  .ph-btn.done { background: var(--green-l); color: var(--green); border-color: var(--green); }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.3rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .card-title { font-size: 15px; font-weight: 700; }
+  .card-sub   { font-size: 12px; color: var(--ink2); margin-bottom: 1rem; padding-left: 52px; }
+
+  /* Rule strip */
+  .rule-strip { display: flex; gap: 8px; margin-bottom: 1rem; }
+  .rule-pill {
+    flex: 1;
+    border-radius: var(--radius-sm);
+    padding: 10px 6px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* Consigna */
+  .consigna-wrap {
+    border-left: 3px solid var(--purple);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--purple-l);
+    padding: 12px 16px;
+    margin-bottom: 10px;
+  }
+  .consigna-label { font-size: 10px; font-weight: 700; color: var(--purple); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; font-family: 'DM Mono', monospace; }
+  .consigna-text  { font-size: 16px; font-weight: 600; line-height: 1.5; color: var(--ink); }
+  .steps-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .step { border-radius: 20px; padding: 3px 12px; font-size: 12px; font-weight: 600; }
+  .s0 { background: #EBE9FF; color: #3730A3; }
+  .s1 { background: var(--teal-l); color: #0C4A49; }
+  .s2 { background: var(--amber-l); color: #78350F; }
+  .s3 { background: #FCE7F3; color: #9D174D; }
+
+  /* Navigation buttons */
+  .nav-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .nav-btn {
+    flex: 1;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.12s;
+  }
+  .nav-btn:hover { background: var(--bg); }
+
+  /* Result buttons */
+  .result-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .res-btn {
+    flex: 1;
+    border-radius: var(--radius-sm);
+    padding: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.12s, transform 0.12s;
+    border: none;
+  }
+  .res-btn:active { transform: scale(0.97); }
+  .res-ok  { background: var(--green-l); color: var(--green); border: 1.5px solid #6EE7B7; }
+  .res-err { background: var(--red-l);   color: var(--red);   border: 1.5px solid #FCA5A5; }
+
+  /* Dot progress */
+  .dots-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+  .dot {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--ink2);
+  }
+  .dot.ok  { background: var(--green-l); border-color: #6EE7B7; color: var(--green); }
+  .dot.err { background: var(--red-l);   border-color: #FCA5A5; color: var(--red); }
+
+  /* Timer */
+  .timer-wrap { margin-bottom: 12px; }
+  .timer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .timer-top span { font-size: 12px; color: var(--ink2); font-weight: 500; }
+  .timer-start {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .timer-bar-bg { background: var(--bg); border-radius: 4px; height: 8px; overflow: hidden; }
+  .timer-bar    { height: 8px; border-radius: 4px; background: var(--purple); transition: width 1s linear; }
+  .timer-val    { font-size: 11px; color: var(--ink3); text-align: right; margin-top: 2px; font-family: 'DM Mono', monospace; }
+
+  /* Metacog tip */
+  .metacog {
+    background: var(--purple-l);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #3730A3;
+    line-height: 1.6;
+  }
+  .metacog strong { display: block; margin-bottom: 4px; }
+
+  /* Help levels */
+  .help-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .hlvl {
+    border-radius: var(--radius-sm);
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.12s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .hlvl.sel { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+  /* Tokens */
+  .token-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .token {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid #FFD54F;
+    background: var(--amber-l);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(.34,1.56,.64,1);
+    color: #78350F;
+  }
+  .token.lit { background: #FDCB6E; border-color: #D97706; transform: scale(1.12); }
+  .token-msg { font-size: 13px; color: var(--ink2); font-weight: 500; }
+
+  /* Register */
+  .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .reg-card { background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .reg-title { font-size: 11px; font-weight: 700; color: var(--ink2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+  .reg-option { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 5px; cursor: pointer; }
+  .reg-option input { accent-color: var(--purple); }
+
+  /* Score boxes */
+  .score-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .score-box {
+    flex: 1; min-width: 70px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .score-box p { font-size: 10px; color: var(--ink3); margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
+  .score-box span { font-size: 22px; font-weight: 700; color: var(--ink); }
+  .score-box.purple { background: var(--purple-l); }
+  .score-box.purple span { color: var(--purple); }
+
+  /* Textarea */
+  .obs-area {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--surface);
+    resize: none;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .obs-area:focus { border-color: var(--purple); }
+  .obs-area::placeholder { color: var(--ink3); }
+
+  /* CTA */
+  .cta {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius);
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.12s;
+    margin-top: 6px;
+    text-align: center;
+  }
+  .cta:hover { opacity: 0.92; }
+  .cta:active { transform: scale(0.98); }
+
+  /* Section label */
+  .slabel { font-size: 12px; font-weight: 700; color: var(--ink2); margin-bottom: 6px; margin-top: 10px; }
+
+  /* Slider */
+  input[type=range] { width: 100%; accent-color: var(--purple); }
+
+  /* Progress tip */
+  .prog-tip {
+    background: var(--green-l);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #065F46;
+    line-height: 1.6;
+  }
+  .prog-tip strong { display: block; margin-bottom: 2px; }
+
+  /* Hidden */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="logo">🕵️</div>
+    <div>
+      <h1>Escucho, recuerdo y actúo</h1>
+      <p>Sesión de memoria auditiva · 15-20 min · Individual o pequeño grupo</p>
+    </div>
+  </div>
+
+  <div class="meta-row">
+    <span class="pill pill-purple">2º Primaria · TEA</span>
+    <span class="pill pill-amber">3 sesiones / semana</span>
+    <span class="pill pill-green">Máx. 3 alumnos</span>
+  </div>
+
+  <!-- Phase navigation -->
+  <div class="phase-nav">
+    <button class="ph-btn active" onclick="goPhase(0)">🎯 Activación</button>
+    <button class="ph-btn"        onclick="goPhase(1)">⚡ Nivel base</button>
+    <button class="ph-btn"        onclick="goPhase(2)">⏳ Retención diferida</button>
+    <button class="ph-btn"        onclick="goPhase(3)">🚀 Secuencia compleja</button>
+    <button class="ph-btn"        onclick="goPhase(4)">📋 Registro</button>
+  </div>
+
+  <!-- ── FASE 0 ACTIVACIÓN ── -->
+  <div id="p0">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--purple-l);">🎯</div>
+        <div><div class="card-title">Fase 1 · Activación atencional</div></div>
+      </div>
+      <div class="card-sub">3 minutos · Preparar escucha activa</div>
+
+      <div class="rule-strip">
+        <div class="rule-pill" style="background:#E8F4FD;color:#1565C0;">👂 Escucho</div>
+        <div class="rule-pill" style="background:var(--amber-l);color:var(--amber);">💭 Pienso</div>
+        <div class="rule-pill" style="background:var(--green-l);color:var(--green);">✋ Hago</div>
+      </div>
+
+      <div class="consigna-wrap">
+        <div class="consigna-label">Di al alumno</div>
+        <div class="consigna-text">"Ahora vamos a usar orejas de detective. Primero escuchamos. Después pensamos. Luego hacemos."</div>
+      </div>
+
+      <p class="slabel">Ensayos simples — toca para marcar</p>
+      <div id="warmups" style="display:flex;flex-direction:column;gap:7px;"></div>
+      <p style="font-size:12px;color:var(--ink2);margin-top:10px;">Refuerzo: <em>"Muy bien. Has esperado y escuchado."</em></p>
+    </div>
+    <button class="cta" onclick="goPhase(1)">Empezar nivel base →</button>
+  </div>
+
+  <!-- ── FASE 1 NIVEL BASE ── -->
+  <div id="p1" class="hidden">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--teal-l);">⚡</div>
+        <div><div class="card-title">Fase 2 · Nivel base</div></div>
+      </div>
+      <div class="card-sub">5 minutos · Consignas de 2 acciones · 8 ensayos</div>
+      <div class="consigna-wrap">
+        <div class="consigna-label">Ensayo <span id="e1n">1</span> de 8</div>
+        <div class="consigna-text" id="c1t"></div>
+        <div class="steps-row" id="c1s"></div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="prev(1)">← Anterior</button>
+        <button class="nav-btn" onclick="next(1)">Siguiente →</button>
+      </div>
+      <div class="result-row">
+        <button class="res-btn res-ok"  onclick="mark(1,'ok')">✓ Correcto</button>
+        <button class="res-btn res-err" onclick="mark(1,'err')">✗ Error / apoyo</button>
+      </div>
+      <div class="dots-row" id="d1"></div>
+    </div>
+    <button class="cta" onclick="goPhase(2)">Pasar a retención diferida →</button>
+  </div>
+
+  <!-- ── FASE 2 RETENCIÓN DIFERIDA ── -->
+  <div id="p2" class="hidden">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--amber-l);">⏳</div>
+        <div><div class="card-title">Fase 3 · Retención diferida</div></div>
+      </div>
+      <div class="card-sub">5 minutos · Demora de 5 segundos · 8 ensayos</div>
+      <div class="consigna-wrap">
+        <div class="consigna-label">Ensayo <span id="e2n">1</span> de 8</div>
+        <div class="consigna-text" id="c2t"></div>
+        <div class="steps-row" id="c2s"></div>
+      </div>
+      <div class="timer-wrap">
+        <div class="timer-top">
+          <span>Cuenta 5 s antes de que actúe · Di: <em>"Piensa…"</em></span>
+          <button class="timer-start" onclick="startTimer()">▶ Iniciar</button>
+        </div>
+        <div class="timer-bar-bg"><div class="timer-bar" id="tBar" style="width:100%"></div></div>
+        <div class="timer-val" id="tVal">5 s</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="prev(2)">← Anterior</button>
+        <button class="nav-btn" onclick="next(2)">Siguiente →</button>
+      </div>
+      <div class="result-row">
+        <button class="res-btn res-ok"  onclick="mark(2,'ok')">✓ Correcto</button>
+        <button class="res-btn res-err" onclick="mark(2,'err')">✗ Error / apoyo</button>
+      </div>
+      <div class="dots-row" id="d2"></div>
+    </div>
+    <button class="cta" onclick="goPhase(3)">Pasar a secuencia compleja →</button>
+  </div>
+
+  <!-- ── FASE 3 SECUENCIA COMPLEJA ── -->
+  <div id="p3" class="hidden">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--red-l);">🚀</div>
+        <div><div class="card-title">Fase 4 · Secuencia compleja</div></div>
+      </div>
+      <div class="card-sub">5-7 minutos · 3-4 pasos · Observar omisiones, orden e impulsividad</div>
+      <div class="consigna-wrap">
+        <div class="consigna-label">Ensayo <span id="e3n">1</span> de 6</div>
+        <div class="consigna-text" id="c3t"></div>
+        <div class="steps-row" id="c3s"></div>
+      </div>
+      <div class="metacog">
+        <strong>Si falla — guía metacognitiva (no repetir automáticamente):</strong>
+        "Para. ¿Qué escuchaste primero?" → esperar → "¿Y después?" → reconstruir → modelar solo si no evoca
+      </div>
+      <p class="slabel">Jerarquía de ayudas — toca para marcar nivel usado</p>
+      <div class="help-grid" id="helpGrid">
+        <button class="hlvl" style="background:var(--green-l);color:var(--green);"      onclick="selHelp(this)">1 · Oral sola</button>
+        <button class="hlvl" style="background:var(--teal-l);color:var(--teal);"        onclick="selHelp(this)">2 · Repetición lenta</button>
+        <button class="hlvl" style="background:var(--amber-l);color:var(--amber);"      onclick="selHelp(this)">3 · Segmentación</button>
+        <button class="hlvl" style="background:var(--red-l);color:var(--red);"          onclick="selHelp(this)">4 · Apoyo gestual</button>
+        <button class="hlvl" style="background:#F5D0FE;color:#6B21A8;"                  onclick="selHelp(this)">5 · Modelado total</button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="prev(3)">← Anterior</button>
+        <button class="nav-btn" onclick="next(3)">Siguiente →</button>
+      </div>
+      <div class="result-row">
+        <button class="res-btn res-ok"  onclick="mark(3,'ok')">✓ Correcto</button>
+        <button class="res-btn res-err" onclick="mark(3,'err')">✗ Error / apoyo</button>
+      </div>
+      <div class="dots-row" id="d3"></div>
+    </div>
+
+    <div class="card">
+      <p style="font-size:14px;font-weight:700;margin-bottom:10px;">Tokens de sesión</p>
+      <div class="token-row" id="tokenRow"></div>
+      <p class="token-msg" id="tokenMsg" style="margin-top:8px;">Toca para marcar un acierto</p>
+      <p style="font-size:12px;color:var(--ink3);margin-top:6px;">Cada 4 tokens → <em>"Tu memoria detective está creciendo."</em><br>5 tokens → 2 min actividad motivadora.</p>
+    </div>
+    <button class="cta" onclick="goPhase(4)">Ir al registro de sesión →</button>
+  </div>
+
+  <!-- ── FASE 4 REGISTRO ── -->
+  <div id="p4" class="hidden">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--green-l);">📋</div>
+        <div><div class="card-title">Registro de observación</div></div>
+      </div>
+      <div class="card-sub" style="margin-bottom:1rem;">Completar al finalizar la sesión</div>
+
+      <div class="reg-grid">
+        <div class="reg-card">
+          <div class="reg-title">Retención lograda</div>
+          <label class="reg-option"><input type="radio" name="ret" value="2"> 2 pasos</label>
+          <label class="reg-option"><input type="radio" name="ret" value="3"> 3 pasos</label>
+          <label class="reg-option"><input type="radio" name="ret" value="4"> 4 pasos</label>
+        </div>
+        <div class="reg-card">
+          <div class="reg-title">Orden correcto</div>
+          <label class="reg-option"><input type="radio" name="ord" value="s"> Siempre</label>
+          <label class="reg-option"><input type="radio" name="ord" value="av"> A veces</label>
+          <label class="reg-option"><input type="radio" name="ord" value="no"> No mantiene</label>
+        </div>
+        <div class="reg-card">
+          <div class="reg-title">Necesidad de ayuda</div>
+          <label class="reg-option"><input type="radio" name="ay" value="au"> Autónomo</label>
+          <label class="reg-option"><input type="radio" name="ay" value="lv"> Leve</label>
+          <label class="reg-option"><input type="radio" name="ay" value="mo"> Moderada</label>
+          <label class="reg-option"><input type="radio" name="ay" value="mt"> Modelado total</label>
+        </div>
+        <div class="reg-card">
+          <div class="reg-title">Estrategias espontáneas</div>
+          <label class="reg-option"><input type="checkbox"> Repite en voz baja</label>
+          <label class="reg-option"><input type="checkbox"> Verbaliza pasos</label>
+          <label class="reg-option"><input type="checkbox"> Autocontrol presente</label>
+          <label class="reg-option"><input type="checkbox"> Impulsividad alta</label>
+        </div>
+      </div>
+
+      <p class="slabel" style="margin-top:14px;">Tiempo de atención auditiva</p>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <input type="range" id="attSlider" min="1" max="20" value="10">
+        <span style="font-size:15px;font-weight:700;min-width:50px;" id="attVal">10 min</span>
+      </div>
+
+      <p class="slabel" style="margin-top:16px;">Resumen de resultados</p>
+      <div class="score-row">
+        <div class="score-box"><p>Fase 2</p><span id="sc1">—</span></div>
+        <div class="score-box"><p>Fase 3</p><span id="sc2">—</span></div>
+        <div class="score-box"><p>Fase 4</p><span id="sc3">—</span></div>
+        <div class="score-box purple"><p>Tokens</p><span id="scT">0</span></div>
+      </div>
+
+      <p class="slabel">Observaciones libres</p>
+      <textarea class="obs-area" rows="3" placeholder="Anotar conductas relevantes, omisiones, estrategias observadas…"></textarea>
+
+      <div class="prog-tip">
+        <strong>Criterio de progresión</strong>
+        80% de éxito en 3 sesiones consecutivas → subir dificultad: más pasos, categorías semánticas, distractores, mayor demora temporal.
+      </div>
+    </div>
+
+    <button class="cta" onclick="alert('Sesión registrada ✓\nGuarda esta página o haz una captura de pantalla para conservar el registro.')">
+      ✓ Guardar registro de sesión
+    </button>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const C1 = [
+  {t:'Coge el lápiz y toca la mesa.',                    s:['Coge el lápiz','Toca la mesa']},
+  {t:'Coge la goma y ponla encima del cuaderno.',        s:['Coge la goma','Ponla encima del cuaderno']},
+  {t:'Señala la puerta y aplaude una vez.',              s:['Señala la puerta','Aplaude una vez']},
+  {t:'Toca tu cabeza y levanta el rotulador rojo.',      s:['Toca tu cabeza','Levanta el rotulador rojo']},
+  {t:'Abre el cuaderno y pon el lápiz dentro.',         s:['Abre el cuaderno','Pon el lápiz dentro']},
+  {t:'Levántate y señala la ventana.',                   s:['Levántate','Señala la ventana']},
+  {t:'Cierra los ojos y da una palmada.',                s:['Cierra los ojos','Da una palmada']},
+  {t:'Coge el rotulador azul y ponlo en la mesa.',      s:['Coge el rotulador azul','Ponlo en la mesa']},
+];
+const C2 = [
+  {t:'Coge el bloque azul y ponlo dentro de la caja.',  s:['Coge el bloque azul','Ponlo dentro de la caja']},
+  {t:'Señala la silla y levanta la mano.',              s:['Señala la silla','Levanta la mano']},
+  {t:'Toca el cuaderno y da dos palmadas.',             s:['Toca el cuaderno','Da dos palmadas']},
+  {t:'Pon el lápiz en el estuche y ciérralo.',         s:['Pon el lápiz en el estuche','Ciérralo']},
+  {t:'Levántate, da un paso y vuelve a sentarte.',      s:['Levántate','Da un paso','Vuelve a sentarte']},
+  {t:'Coge el bloque rojo y colócalo encima del azul.', s:['Coge el bloque rojo','Colócalo encima del azul']},
+  {t:'Toca la mesa dos veces y señala la puerta.',      s:['Toca la mesa dos veces','Señala la puerta']},
+  {t:'Abre el cuaderno, señala la fecha y ciérralo.',  s:['Abre el cuaderno','Señala la fecha','Ciérralo']},
+];
+const C3 = [
+  {t:'Coge el lápiz, dibuja un círculo, guárdalo y toca la silla.',       s:['Coge el lápiz','Dibuja un círculo','Guárdalo','Toca la silla']},
+  {t:'Levántate, da una palmada, señala la ventana y siéntate.',          s:['Levántate','Da una palmada','Señala la ventana','Siéntate']},
+  {t:'Coge la goma, ponla en el cuaderno, ciérralo y levanta la mano.',   s:['Coge la goma','Ponla en el cuaderno','Ciérralo','Levanta la mano']},
+  {t:'Toca la mesa, señala la puerta, da dos pasos y vuelve.',            s:['Toca la mesa','Señala la puerta','Da dos pasos','Vuelve']},
+  {t:'Coge el bloque azul, ponlo encima del rojo, aplaude y siéntate.',   s:['Coge el bloque azul','Ponlo encima del rojo','Aplaude','Siéntate']},
+  {t:'Abre el estuche, saca el rotulador rojo, dibuja una línea y guárdalo.', s:['Abre el estuche','Saca el rotulador rojo','Dibuja una línea','Guárdalo']},
+];
+
+const SETS = [null, C1, C2, C3];
+const MAX  = [0, 8, 8, 6];
+const SC   = ['s0','s1','s2','s3'];
+
+let idx = [0,0,0,0];
+let results = [[],[],[]];
+let tokens = 0;
+let timerInt = null;
+
+// ── WARMUPS ───────────────────────────────────────────────────────────────────
+['Toca la mesa.','Levanta una mano.','Cierra los ojos.'].forEach((txt,i)=>{
+  const d = document.createElement('div');
+  d.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg);border-radius:var(--radius-sm);cursor:pointer;border:1px solid var(--border);';
+  d.innerHTML=`<div id="wd${i}" style="width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .2s;"></div><span style="font-size:14px;font-weight:600;">${txt}</span>`;
+  d.onclick=()=>{
+    const dot=document.getElementById('wd'+i);
+    const on = dot.style.background==='rgb(5, 150, 105)';
+    dot.style.background = on?'':'#059669';
+    dot.style.borderColor = on?'var(--border)':'#059669';
+  };
+  document.getElementById('warmups').appendChild(d);
+});
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render(p){
+  const set = SETS[p][idx[p]];
+  document.getElementById('c'+p+'t').textContent = set.t;
+  const sc = document.getElementById('c'+p+'s');
+  sc.innerHTML='';
+  set.s.forEach((st,i)=>{
+    const sp = document.createElement('span');
+    sp.className='step '+(SC[i]||'s3');
+    sp.textContent=(i+1)+'. '+st;
+    sc.appendChild(sp);
+  });
+  document.getElementById('e'+p+'n').textContent = idx[p]+1;
+  renderDots(p);
+}
+
+function renderDots(p){
+  const el = document.getElementById('d'+p);
+  el.innerHTML='';
+  for(let i=0; i<MAX[p]; i++){
+    const r = results[p-1][i];
+    const d = document.createElement('div');
+    d.className='dot'+(r==='ok'?' ok':r==='err'?' err':'');
+    d.textContent = r==='ok'?'✓':r==='err'?'✗':i+1;
+    d.onclick=()=>{ idx[p]=i; render(p); };
+    el.appendChild(d);
+  }
+}
+
+function next(p){ if(idx[p]<MAX[p]-1){idx[p]++;render(p);} }
+function prev(p){ if(idx[p]>0){idx[p]--;render(p);} }
+
+function mark(p,res){
+  results[p-1][idx[p]]=res;
+  renderDots(p);
+  updateScores();
+}
+
+function updateScores(){
+  [1,2,3].forEach(p=>{
+    const ok=results[p-1].filter(r=>r==='ok').length;
+    const el=document.getElementById('sc'+p);
+    if(el) el.textContent=ok;
+  });
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────────────────
+function startTimer(){
+  clearInterval(timerInt);
+  let s=5;
+  const bar=document.getElementById('tBar');
+  const val=document.getElementById('tVal');
+  bar.style.width='100%';
+  val.textContent='5 s';
+  timerInt=setInterval(()=>{
+    s--;
+    bar.style.width=Math.round(s/5*100)+'%';
+    val.textContent=s>0?s+' s':'¡Actúa!';
+    if(s<=0) clearInterval(timerInt);
+  },1000);
+}
+
+// ── TOKENS ────────────────────────────────────────────────────────────────────
+function buildTokens(){
+  const row=document.getElementById('tokenRow');
+  row.innerHTML='';
+  for(let i=0;i<5;i++){
+    const t=document.createElement('div');
+    t.className='token'+(i<tokens?' lit':'');
+    t.textContent='⭐';
+    t.onclick=()=>{ tokens=i<tokens?i:i+1; buildTokens(); document.getElementById('scT').textContent=tokens; updateTokenMsg(); };
+    row.appendChild(t);
+  }
+}
+function updateTokenMsg(){
+  const msgs=['Toca para marcar un acierto','','','','🌟 "Tu memoria detective está creciendo."','🏆 ¡5 tokens! → 2 min actividad motivadora'];
+  document.getElementById('tokenMsg').textContent=msgs[tokens]||'';
+}
+buildTokens();
+
+// ── HELP LEVELS ───────────────────────────────────────────────────────────────
+function selHelp(el){
+  document.querySelectorAll('.hlvl').forEach(h=>h.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ── PHASE NAV ─────────────────────────────────────────────────────────────────
+function goPhase(n){
+  ['p0','p1','p2','p3','p4'].forEach((id,i)=>{
+    document.getElementById(id).classList.toggle('hidden',i!==n);
+  });
+  document.querySelectorAll('.ph-btn').forEach((b,i)=>{
+    b.classList.toggle('active',i===n);
+  });
+  if(n===4) updateScores();
+}
+
+// ── SLIDER ────────────────────────────────────────────────────────────────────
+document.getElementById('attSlider').addEventListener('input',function(){
+  document.getElementById('attVal').textContent=this.value+' min';
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+render(1); render(2); render(3);
+</script>
+</body>
+</html>
